@@ -19,8 +19,6 @@ app.use(cors());
 const userRouter =  require("./routes/users");
 app.use('/users',userRouter);
 
-
-
 app.listen(9000, () => {
     console.log("The Server is running on http://localhost:9000");
 });
