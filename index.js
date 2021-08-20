@@ -4,8 +4,6 @@ const cors = require("cors");
 const url = "mongodb://localhost/UrbanFarmerDB";
 const app = express();
 
-
-
 mongoose.connect(url,{useNewUrlParser:true});
 const con =  mongoose.connection;
 
