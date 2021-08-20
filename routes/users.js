@@ -54,7 +54,6 @@ try {
 router.patch('/:id', async(req,res)=> {
     
     try {
-
         const user = await User.findById(req.params.id);
         user.mobileNo = req.body.mobileNo;
         const u1 = await user.save();
@@ -66,7 +65,4 @@ router.patch('/:id', async(req,res)=> {
     
     });
     
-
-
 module.exports = router;
-
