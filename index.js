@@ -22,5 +22,5 @@ const userRouter = require("./routes/users");
 app.use('/users', userRouter);
 
 app.listen(4000, () => {
-    console.log("The Server is running on http://localhost:9000");
+    console.log("The Server is running on http://localhost:4000");
 });
