@@ -7,7 +7,8 @@ const app = express();
 const morgan = require('morgan')
 app.use(morgan('combined'))
 const serverless = require("serverless-http");
-
+const router = express.Router();
+const userRouter = require("./routes/users");
 
 mongoose.connect(url, { useNewUrlParser: true });
 const con = mongoose.connection;
@@ -20,18 +21,19 @@ con.on('open', function () {
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
     res.json({
       hello: "hi!"
     });
   });
 
-const userRouter = require("./routes/users");
 app.use('/users', userRouter);
 
-app.listen(4000, () => {
-    console.log("The Server is running on http://localhost:9000");
-});
+app.use(`/api`, router);
+
+// app.listen(4000, () => {
+//     console.log("The Server is running on http://localhost:9000");
+// });
 
 
 
