@@ -25,14 +25,9 @@ const userRouter = require("./routes/users");
 app.use('/users', userRouter);
 
 app.listen(4000, () => {
-<<<<<<< HEAD
     console.log("The Server is running on http://localhost:9000");
 });
 
 
 
 module.exports.handler = serverless(app);
-=======
-    console.log("The Server is running on http://localhost:4000");
-});
->>>>>>> 47734991a7e2831cbca00da0aa4ca694bd0e4d23

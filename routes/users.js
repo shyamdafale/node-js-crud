@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../model/user");
-
+const app = express();
+const serverless = require("serverless-http");
 
 router.get('/', async (req, res) => {
 
@@ -111,3 +112,4 @@ router.post('/signin', async (req, res) => {
 
 
 module.exports = router;
+module.exports.handler = serverless(app);
