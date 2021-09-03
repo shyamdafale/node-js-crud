@@ -20,6 +20,11 @@ con.on('open', function () {
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+    res.json({
+      hello: "hi!"
+    });
+  });
 
 const userRouter = require("./routes/users");
 app.use('/users', userRouter);
@@ -29,6 +34,8 @@ app.listen(4000, () => {
 });
 
 
+
 module.exports = app;
 
+module.exports.handler = serverless(app);
 
