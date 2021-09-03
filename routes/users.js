@@ -112,4 +112,4 @@ router.post('/signin', async (req, res) => {
 
 
 module.exports = router;
-module.exports.handler = serverless(app);
+module.exports.handler = serverless(router);
