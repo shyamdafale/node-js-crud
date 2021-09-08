@@ -16,6 +16,7 @@ functions:
       - http: ANY /users/ {proxy+}
       - http: POST /users/signup
       - http: POST /users/signin
+      - http: ANY /
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
