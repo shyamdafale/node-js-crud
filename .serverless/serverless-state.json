@@ -175,7 +175,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/restapi/dev/1631112948163-2021-09-08T14:55:48.163Z/restapi.zip"
+                "S3Key": "serverless/restapi/dev/1631118137824-2021-09-08T16:22:17.824Z/restapi.zip"
               },
               "Handler": "index.server",
               "Runtime": "nodejs12.x",
@@ -193,14 +193,14 @@
               "HelloLogGroup"
             ]
           },
-          "HelloLambdaVersionaOA9UKc03TaYBiBO7vKKlYe5kKUcNyzNlUBkR6Jtc": {
+          "HelloLambdaVersionuiNKGHcsNOdS1RsLQdTgeEwtb7LioPJClBtX8x40rrI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HelloLambdaFunction"
               },
-              "CodeSha256": "uCbZ0EDOl4h+pilm7xOQr5TzQmyLqm/DOVtz9W1JRGw="
+              "CodeSha256": "Y9qZqE+NaE7NMFC4N97YWcgdZTwivYZXLoHDuQ7lUGM="
             }
           },
           "ApiGatewayRestApi": {
@@ -392,7 +392,56 @@
               "HelloLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1631112927590": {
+          "ApiGatewayMethodAny": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "ANY",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "HelloLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "HelloLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1631118115526": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -403,7 +452,8 @@
             "DependsOn": [
               "ApiGatewayMethodUsersAny",
               "ApiGatewayMethodUsersSignupPost",
-              "ApiGatewayMethodUsersSigninPost"
+              "ApiGatewayMethodUsersSigninPost",
+              "ApiGatewayMethodAny"
             ]
           },
           "HelloLambdaPermissionApiGateway": {
@@ -456,7 +506,7 @@
           "HelloLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersionaOA9UKc03TaYBiBO7vKKlYe5kKUcNyzNlUBkR6Jtc"
+              "Ref": "HelloLambdaVersionuiNKGHcsNOdS1RsLQdTgeEwtb7LioPJClBtX8x40rrI"
             },
             "Export": {
               "Name": "sls-restapi-dev-HelloLambdaFunctionQualifiedArn"
@@ -587,6 +637,9 @@
           },
           {
             "http": "POST /users/signin"
+          },
+          {
+            "http": "ANY /"
           }
         ],
         "name": "restapi-dev-hello",
@@ -595,7 +648,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersionaOA9UKc03TaYBiBO7vKKlYe5kKUcNyzNlUBkR6Jtc"
+        "versionLogicalId": "HelloLambdaVersionuiNKGHcsNOdS1RsLQdTgeEwtb7LioPJClBtX8x40rrI"
       }
     },
     "configValidationMode": "warn",
@@ -617,7 +670,7 @@
     "artifact": "/Users/abhilash/Desktop/github/node-js-crud/.serverless/restapi.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/restapi/dev/1631112948163-2021-09-08T14:55:48.163Z",
+    "artifactDirectoryName": "serverless/restapi/dev/1631118137824-2021-09-08T16:22:17.824Z",
     "artifact": "restapi.zip"
   }
 }

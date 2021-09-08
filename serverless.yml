@@ -8,6 +8,7 @@ provider:
   memorySize: 2048
   stage: dev
   lambdaHashingVersion: 20201221
+  profile: user
 
 functions:
   hello:
