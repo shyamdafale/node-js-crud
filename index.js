@@ -21,11 +21,11 @@ con.on('open', function () {
 app.use(express.json());
 app.use(cors());
 
-router.get("/", (req, res) => {
-    res.json({
-      hello: "hi!"
-    });
-  });
+// router.get("/", (req, res) => {
+//     res.json({
+//       hello: "hi!"
+//     });
+//   });
 
 app.use('/users', userRouter);
 
@@ -35,9 +35,13 @@ app.use(`/api`, router);
 //     console.log("The Server is running on http://localhost:9000");
 // });
 
+app.all("*",(req,res)=>{
+    throw new AppError('not found');
+});
 
 
-module.exports = app;
 
-module.exports.handler = serverless(app);
+// module.exports = app;
+
+module.exports.server = serverless(app);
 
