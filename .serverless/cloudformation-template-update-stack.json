@@ -161,9 +161,9 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/restapi/dev/1631088309920-2021-09-08T08:05:09.920Z/restapi.zip"
+          "S3Key": "serverless/restapi/dev/1631112948163-2021-09-08T14:55:48.163Z/restapi.zip"
         },
-        "Handler": "handler.hello",
+        "Handler": "index.server",
         "Runtime": "nodejs12.x",
         "FunctionName": "restapi-dev-hello",
         "MemorySize": 2048,
@@ -179,14 +179,14 @@
         "HelloLogGroup"
       ]
     },
-    "HelloLambdaVersionRSYbwvHmkR53gd31HuOEkIEugufo4cYVxhZDoj1dDg": {
+    "HelloLambdaVersionaOA9UKc03TaYBiBO7vKKlYe5kKUcNyzNlUBkR6Jtc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HelloLambdaFunction"
         },
-        "CodeSha256": "RMkylrDS9ry1cW+ZrhONUghHnxsueoZXnS3EF9VEwcY="
+        "CodeSha256": "uCbZ0EDOl4h+pilm7xOQr5TzQmyLqm/DOVtz9W1JRGw="
       }
     },
     "ApiGatewayRestApi": {
@@ -201,7 +201,7 @@
         "Policy": ""
       }
     },
-    "ApiGatewayResourceProxyVar": {
+    "ApiGatewayResourceUsers": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -210,19 +210,43 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "{proxy+}",
+        "PathPart": "users",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodProxyVarAny": {
+    "ApiGatewayResourceUsersSignup": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "signup",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersSignin": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "signin",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersAny": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceProxyVar"
+          "Ref": "ApiGatewayResourceUsers"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -262,16 +286,13 @@
         "HelloLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayMethodAny": {
+    "ApiGatewayMethodUsersSignupPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "ANY",
+        "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
+          "Ref": "ApiGatewayResourceUsersSignup"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -311,7 +332,53 @@
         "HelloLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1631088292214": {
+    "ApiGatewayMethodUsersSigninPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersSignin"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "HelloLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "HelloLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayDeployment1631112927590": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -320,8 +387,9 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodProxyVarAny",
-        "ApiGatewayMethodAny"
+        "ApiGatewayMethodUsersAny",
+        "ApiGatewayMethodUsersSignupPost",
+        "ApiGatewayMethodUsersSigninPost"
       ]
     },
     "HelloLambdaPermissionApiGateway": {
@@ -374,7 +442,7 @@
     "HelloLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionRSYbwvHmkR53gd31HuOEkIEugufo4cYVxhZDoj1dDg"
+        "Ref": "HelloLambdaVersionaOA9UKc03TaYBiBO7vKKlYe5kKUcNyzNlUBkR6Jtc"
       },
       "Export": {
         "Name": "sls-restapi-dev-HelloLambdaFunctionQualifiedArn"

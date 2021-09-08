@@ -31,14 +31,13 @@ app.use('/users', userRouter);
 
 app.use(`/api`, router);
 
-// app.listen(4000, () => {
-//     console.log("The Server is running on http://localhost:9000");
-// });
-
-app.all("*",(req,res)=>{
-    throw new AppError('not found');
+app.listen(4000, () => {
+    console.log("The Server is running on http://localhost:9000");
 });
 
+app.get('/', async (req, res, next) => {
+    res.status(200).send('Hello World! from index')
+})
 
 
 // module.exports = app;

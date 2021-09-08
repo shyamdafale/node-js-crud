@@ -11,10 +11,11 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: index.server
     events:
-      - http: ANY {proxy+}
-      - http: ANY /
+      - http: ANY /users/ {proxy+}
+      - http: POST /users/signup
+      - http: POST /users/signin
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
