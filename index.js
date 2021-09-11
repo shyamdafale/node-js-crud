@@ -19,7 +19,9 @@ app.use(cors());
 
 
 const userRouter = require("./routes/users");
+const productRouter = require("./routes/products");
 app.use('/users', userRouter);
+app.use('/products', productRouter);
 
 app.listen(4000, () => {
     console.log("The Server is running on http://localhost:4000");
