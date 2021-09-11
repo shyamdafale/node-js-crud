@@ -9,6 +9,7 @@ app.use(morgan('combined'))
 const serverless = require("serverless-http");
 const router = express.Router();
 const userRouter = require("./routes/users");
+const productRouter = require("./routes/products");
 
 mongoose.connect(url, { useNewUrlParser: true });
 const con = mongoose.connection;
@@ -27,8 +28,7 @@ app.use(cors());
 //     });
 //   });
 
-const userRouter = require("./routes/users");
-const productRouter = require("./routes/products");
+
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 
